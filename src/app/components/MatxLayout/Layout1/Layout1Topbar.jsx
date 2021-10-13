@@ -102,14 +102,14 @@ const Layout1Topbar = () => {
             <div className={clsx({ 'topbar-hold': true, fixed: fixed })}>
                 <div className="flex justify-between items-center h-full">
                     <div className="flex">
-                        {/* <IconButton
+                        <IconButton
                             onClick={handleSidebarToggle}
                             className="hide-on-pc"
                         >
                             <Icon>menu</Icon>
                         </IconButton>
 
-                        <div className="hide-on-mobile">
+                        {/* <div className="hide-on-mobile">
                             <IconButton>
                                 <Icon>mail_outline</Icon>
                             </IconButton>

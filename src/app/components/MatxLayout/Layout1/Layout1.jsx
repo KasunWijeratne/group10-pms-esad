@@ -5,7 +5,6 @@ import Scrollbar from 'react-perfect-scrollbar'
 import { renderRoutes } from 'react-router-config'
 import Layout1Topbar from './Layout1Topbar'
 import Layout1Sidenav from './Layout1Sidenav'
-import Footer from '../../Footer/Footer'
 import SecondarySidebar from '../../SecondarySidebar/SecondarySidebar'
 import AppContext from 'app/contexts/AppContext'
 import { MatxSuspense } from 'app/components'
@@ -105,9 +104,6 @@ const Layout1 = () => {
                         <div className="relative flex-grow">
                             <MatxSuspense>{renderRoutes(routes)}</MatxSuspense>
                         </div>
-                        {settings.footer.show && !settings.footer.fixed && (
-                            <Footer />
-                        )}
                     </Scrollbar>
                 )}
 
@@ -122,15 +118,10 @@ const Layout1 = () => {
                         <div className="relative flex-grow">
                             <MatxSuspense>{renderRoutes(routes)}</MatxSuspense>
                         </div>
-                        {settings.footer.show && !settings.footer.fixed && (
-                            <Footer />
-                        )}
                     </div>
                 )}
 
-                {settings.footer.show && settings.footer.fixed && <Footer />}
             </div>
-            {settings.secondarySidebar.show && <SecondarySidebar />}
         </div>
     )
 }

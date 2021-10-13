@@ -11,5 +11,8 @@ import './db/list'
 import './db/scrumBoard'
 import './db/notification'
 import './db/ecommerce'
+import './db/requisitions'
+import './db/materials'
+import './db/suppliers'
 
 Mock.onAny().passThrough()

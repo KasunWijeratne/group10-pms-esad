@@ -11,37 +11,45 @@ import sessionRoutes from './views/sessions/SessionRoutes'
 import AuthGuard from './auth/AuthGuard'
 import { AuthProvider } from 'app/contexts/JWTAuthContext'
 import { SettingsProvider } from 'app/contexts/SettingsContext'
+import { SnackbarProvider } from 'notistack'
 
 const App = () => {
+
     return (
         <AppContext.Provider value={{ routes }}>
             <Provider store={Store}>
                 <SettingsProvider>
                     <MatxTheme>
-                        <GlobalCss />
-                        <BrowserRouter basename={process.env.PUBLIC_URL}>
-                        <Router history={history}>
-                            <AuthProvider>
-                                <MatxSuspense>
-                                    <Switch>
-                                        {/* AUTHENTICATION PAGES (SIGNIN, SIGNUP ETC.) */}
-                                        {sessionRoutes.map((item, i) => (
-                                            <Route
-                                                key={i}
-                                                path={item.path}
-                                                component={item.component}
-                                            />
-                                        ))}
-                                        {/* AUTH PROTECTED DASHBOARD PAGES */}
-                                        <AuthGuard>
-                                            <MatxLayout />{' '}
-                                            {/* RETURNS <Layout1/> component */}
-                                        </AuthGuard>
-                                    </Switch>
-                                </MatxSuspense>
-                            </AuthProvider>
-                        </Router>
-                        </BrowserRouter>
+                        <SnackbarProvider maxSnack={3}>
+                            <GlobalCss />
+                            <BrowserRouter basename={process.env.PUBLIC_URL}>
+                                <Router history={history}>
+                                    <AuthProvider>
+                                        <MatxSuspense>
+                                            <Switch>
+                                                {/* AUTHENTICATION PAGES (SIGNIN, SIGNUP ETC.) */}
+                                                {sessionRoutes.map(
+                                                    (item, i) => (
+                                                        <Route
+                                                            key={i}
+                                                            path={item.path}
+                                                            component={
+                                                                item.component
+                                                            }
+                                                        />
+                                                    )
+                                                )}
+                                                {/* AUTH PROTECTED DASHBOARD PAGES */}
+                                                <AuthGuard>
+                                                    <MatxLayout />
+                                                    {/* RETURNS <Layout1/> component */}
+                                                </AuthGuard>
+                                            </Switch>
+                                        </MatxSuspense>
+                                    </AuthProvider>
+                                </Router>
+                            </BrowserRouter>
+                        </SnackbarProvider>
                     </MatxTheme>
                 </SettingsProvider>
             </Provider>

@@ -1,11 +1,25 @@
 export const navigations = [
     {
-        name: 'Dashboard',
-        path: '/dashboard',
+        label: 'Requisition',
+        type: 'label',
+    },
+    {
+        name: 'Requisition list',
+        path: '/requisitions',
         icon: 'dashboard',
     },
     {
-        label: 'Pages',
+        label: 'Manage',
         type: 'label',
+    },
+    {
+        name: 'Materials',
+        path: '/materials',
+        icon: 'dashboard',
+    },
+    {
+        name: 'Suppliers',
+        path: '/suppliers',
+        icon: 'dashboard',
     },
 ]

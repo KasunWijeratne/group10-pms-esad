@@ -1,3 +1,5 @@
+import { navigations } from "app/navigations"
+
 export const SET_USER_NAVIGATION = 'SET_USER_NAVIGATION'
 
 const getfilteredNavigations = (navList = [], role) => {
@@ -18,15 +20,18 @@ const getfilteredNavigations = (navList = [], role) => {
     }, [])
 }
 
-export function getNavigationByUser() {
-    return (dispatch, getState) => {
-        let { user, navigations = [] } = getState()
+const setAuthNav = (nav) => ({
+    type: SET_USER_NAVIGATION,
+    payload: [...nav],
+})
 
-        let filteredNavigations = getfilteredNavigations(navigations, user.role)
+export const getNavigationByUser = (user) => {
+    return (dispatch) => {
+        const filteredNavigations = getfilteredNavigations(
+            navigations,
+            user.role
+        )
 
-        dispatch({
-            type: SET_USER_NAVIGATION,
-            payload: [...filteredNavigations],
-        })
+        dispatch(setAuthNav(filteredNavigations))
     }
 }

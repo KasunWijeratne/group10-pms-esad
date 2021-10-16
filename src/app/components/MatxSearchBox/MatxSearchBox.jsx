@@ -27,8 +27,11 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
     },
 }))
 
-const MatxSearchBox = () => {
-    const [open, setOpen] = useState(false)
+const MatxSearchBox = ({
+    isOpen = false,
+    showClose = true,
+}) => {
+    const [open, setOpen] = useState(isOpen)
 
     const classes = useStyles()
 
@@ -62,9 +65,14 @@ const MatxSearchBox = () => {
                         placeholder="Search here..."
                         autoFocus
                     />
-                    <IconButton onClick={toggle} className="align-middle mx-4">
-                        <Icon>close</Icon>
-                    </IconButton>
+                    {showClose && (
+                        <IconButton
+                            onClick={toggle}
+                            className="align-middle mx-4"
+                        >
+                            <Icon>close</Icon>
+                        </IconButton>
+                    )}
                 </div>
             )}
         </React.Fragment>

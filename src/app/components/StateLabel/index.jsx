@@ -8,16 +8,16 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        maxWidth: 70,
+        maxWidth: 75,
         height: 20,
         textTransform: 'capitalize',
         borderRadius: 10,
         fontSize: '0.8rem',
         color: '#fff',
         background:
-            type === 'high'
+            type === 'high' || type === 'canceled'
                 ? palette.error.main
-                : type === 'medium'
+                : type === 'medium' || type === 'approved'
                 ? palette.success.main
                 : palette.primary.main,
     }),

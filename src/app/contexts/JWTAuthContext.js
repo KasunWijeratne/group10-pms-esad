@@ -91,14 +91,15 @@ export const AuthProvider = ({ children }) => {
         })
         const { accessToken, user } = response.data
 
-        setSession(accessToken)
+        setSession(accessToken);
 
         dispatch({
             type: 'LOGIN',
             payload: {
                 user,
             },
-        })
+        });
+        return user;
     }
 
     const register = async (email, username, password) => {

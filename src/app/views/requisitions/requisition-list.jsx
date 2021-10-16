@@ -7,10 +7,21 @@ import {
     TableBody,
     IconButton,
     Icon,
+    Chip,
 } from '@material-ui/core'
-import StateLabel from 'app/components/StateLabel'
+import { useTheme } from '@material-ui/styles'
 
 const RequisitionList = ({ requisitionsList = [], editRequisition }) => {
+    const theme = useTheme();
+    const getColor = (type) => {
+        if (type === 'high') {
+            return theme.palette.error.main;
+        } else if (type === 'medium') {
+            return theme.palette.success.main;
+        } else {
+            return theme.palette.primary.main;
+        }
+    }
     return (
         <Table className="whitespace-pre" stickyHeader>
             <colgroup>
@@ -54,9 +65,10 @@ const RequisitionList = ({ requisitionsList = [], editRequisition }) => {
                             {requisition.unitPrice}
                         </TableCell>
                         <TableCell className="px-6">
-                            <StateLabel type={requisition.priority}>
-                                {requisition.priority}
-                            </StateLabel>
+                            <Chip
+                                style={{ background: getColor(requisition.priority), color: '#fff' }}
+                                label={requisition.priority}
+                            />
                         </TableCell>
                         <TableCell className="px-6">
                             ${requisition.price}

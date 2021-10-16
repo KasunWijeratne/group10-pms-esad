@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
-import { getMaterialList } from 'app/redux/actions/MaterialActions'
-import MaterialsList from './material-list'
-import CreateMaterial from './create-material'
+import CreateMaterial from './create-supplier'
 import { getSuppliersList } from 'app/redux/actions/SupplierActions'
+import SuppliersList from './suppliers-list'
 
 const defaultState = {
     name: '',
@@ -15,23 +14,14 @@ const defaultState = {
     date: new Date(),
 }
 
-const Materials = () => {
-    const [showCreateMaterial, setCreateMaterial] = useState(false)
+const Suppliers = () => {
+    const [showCreateSupplier, setCreateSupplier] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
-    const materialsList = useSelector((state) => state.material)
     const suppliersList = useSelector((state) => state.supplier)
-    const [materialDefaultValues, setMaterialDefaultValues] =
+    const [supplierDefaultValues, setSupplierDefaultValues] =
         useState(defaultState)
     const dispatch = useDispatch()
-    const { enqueueSnackbar } = useSnackbar()
-
-    const fetchMaterials = async () => {
-        try {
-            await dispatch(getMaterialList())
-        } catch (e) {
-            enqueueSnackbar('Failed to load materials', { variant: 'error' })
-        }
-    }
+    const { enqueueSnackbar } = useSnackbar();
 
     const fetchSuppliers = async () => {
         try {
@@ -42,26 +32,27 @@ const Materials = () => {
     }
 
     const cancelCreate = () => {
-        setMaterialDefaultValues(defaultState)
+        setSupplierDefaultValues(defaultState)
         setIsUpdate(false)
-        setCreateMaterial(false)
+        setCreateSupplier(false)
     }
 
-    const handleEditMaterial = (requisition) => {
+    const handleEditSupplier = (requisition) => {
         setIsUpdate(true)
-        setMaterialDefaultValues(requisition)
-        setCreateMaterial(true)
+        setSupplierDefaultValues(requisition)
+        setCreateSupplier(true)
     }
 
     useEffect(() => {
-        fetchMaterials()
-        fetchSuppliers()
+        if (!suppliersList.length) {
+            fetchSuppliers()    
+        }
     }, [])
 
     return (
         <div className="requisitions m-sm-30 mt-6">
             <div className="flex justify-between items-center mb-6">
-                <h1>Materials</h1>
+                <h1>Suppliers</h1>
             </div>
             <Card elevation={3} className="pt-5 mb-6">
                 <div className="flex justify-between items-center px-6 mb-3">
@@ -71,29 +62,29 @@ const Materials = () => {
                         variant="contained"
                         color="primary"
                         startIcon={<Add />}
-                        disabled={showCreateMaterial}
-                        onClick={setCreateMaterial}
+                        disabled={showCreateSupplier}
+                        onClick={setCreateSupplier}
                     >
                         New
                     </Button>
                 </div>
-                {showCreateMaterial && (
+                {showCreateSupplier && (
                     <div className="p-6">
                         <CreateMaterial
                             suppliers={suppliersList}
                             cancel={cancelCreate}
-                            defaultValues={materialDefaultValues}
+                            defaultValues={supplierDefaultValues}
                             isUpdate={isUpdate}
                         />
                     </div>
                 )}
-                <MaterialsList
-                    materialsList={materialsList}
-                    editMaterial={handleEditMaterial}
+                <SuppliersList
+                    suppliersList={suppliersList}
+                    editSupplier={handleEditSupplier}
                 />
             </Card>
         </div>
     )
 }
 
-export default Materials
+export default Suppliers

@@ -7,6 +7,7 @@ import RequisitionReducer from './RequisitionReducer'
 import GlobalReducer from './GlobalReducer'
 import MaterialReducer from './MaterialRecuder'
 import SupplierReducer from './SupplierReducer'
+import OrderReducer from './OrderReducer'
 
 const RootReducer = combineReducers({
     notifications: NotificationReducer,
@@ -16,6 +17,7 @@ const RootReducer = combineReducers({
     requisition: RequisitionReducer,
     material: MaterialReducer,
     supplier: SupplierReducer,
+    order: OrderReducer,
     global: GlobalReducer,
 })
 

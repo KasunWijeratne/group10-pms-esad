@@ -7,44 +7,39 @@ import {
     TableBody,
     IconButton,
     Icon,
-    Chip,
-    Box,
 } from '@material-ui/core'
 
-const MaterialsList = ({ materialsList = [], editMaterial }) => {
+const SuppliersList = ({ suppliersList = [], editSupplier }) => {
     return (
         <Table className="whitespace-pre" stickyHeader>
             <colgroup>
-                <col style={{ width: '25%' }} />
-                <col style={{ width: '25%' }} />
+                <col style={{ width: '20%' }} />
                 <col style={{ width: '35%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
                 <col style={{ width: '15%' }} />
             </colgroup>
             <TableHead>
                 <TableRow>
                     <TableCell className="px-6">Name</TableCell>
+                    <TableCell className="px-6">Address</TableCell>
+                    <TableCell className="px-6">City</TableCell>
                     <TableCell className="px-6">Date</TableCell>
-                    <TableCell className="px-6">Suppliers</TableCell>
                     <TableCell className="px-6">Action</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
-                {materialsList.map((material, i) => (
+                {suppliersList.map((supplier, i) => (
                     <TableRow key={i}>
-                        <TableCell className="px-6">{material.name}</TableCell>
-                        <TableCell className="px-6">{material.date}</TableCell>
-                        <TableCell className="px-6">
-                            <Box direction="row" spacing={1}>
-                                {material.suppliers.map((supplier) => (
-                                    <Chip label={supplier.name} />
-                                ))}
-                            </Box>
-                        </TableCell>
+                        <TableCell className="px-6">{supplier.name}</TableCell>
+                        <TableCell className="px-6">{`${supplier.address1} ${supplier.address2}`}</TableCell>
+                        <TableCell className="px-6">{supplier.city}</TableCell>
+                        <TableCell className="px-6">{supplier.date}</TableCell>
                         <TableCell className="px-6">
                             <div className="flex">
                                 <IconButton
                                     onClick={() => {
-                                        editMaterial(material)
+                                        editSupplier(supplier)
                                     }}
                                 >
                                     <Icon>edit</Icon>
@@ -61,4 +56,4 @@ const MaterialsList = ({ materialsList = [], editMaterial }) => {
     )
 }
 
-export default MaterialsList
+export default SuppliersList

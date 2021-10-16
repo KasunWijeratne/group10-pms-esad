@@ -3,27 +3,21 @@ import { Redirect } from 'react-router-dom'
 
 import requisitionsRoutes from './views/requisitions/RequisitionRoutes';
 import materialRoutes from './views/materials/MaterialRoutes';
+import supplierRoutes from './views/suppliers/SuppliersRoutes';
+import orderRoutes from './views/order/OrderRoutes';
 
 const redirectRoute = [
     {
         path: '/',
         exact: true,
-        component: () => <Redirect to="/requisitions" />,
-    },
-]
-const staffRoutes = [
-    {
-        path: '/requisitions',
-        exact: true,
-        component: () => <Redirect to="/requisitions" />,
-    },{
-        path: '/materials',
-        exact: true,
-        component: () => <Redirect to="/materials" />,
-    },{
-        path: '/suppliers',
-        exact: true,
-        component: () => <Redirect to="/suppliers" />,
+        component: ({ location }) => {
+            const role = location?.state?.user?.role;
+            if (role === 'ADMIN') {
+                return <Redirect to="/orders" />
+            } else {
+                return <Redirect to="/requisitions" />
+            }
+        },
     },
 ]
 
@@ -36,8 +30,9 @@ const errorRoute = [
 const routes = [
     ...requisitionsRoutes,
     ...materialRoutes,
+    ...supplierRoutes,
+    ...orderRoutes,
     ...redirectRoute,
-    ...staffRoutes,
     ...errorRoute,
 ]
 

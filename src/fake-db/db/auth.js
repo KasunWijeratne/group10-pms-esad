@@ -7,11 +7,20 @@ const JWT_VALIDITY = '7 days'
 const userList = [
     {
         id: 1,
-        role: 'SA',
-        name: 'Jason Alexander',
-        username: 'jason_alexander',
-        email: 'jason@ui-lib.com',
+        role: 'STAFF',
+        name: 'Staff User',
+        username: 'staff_user',
+        email: 'staff_user@test.com',
         avatar: '/assets/images/face-6.jpg',
+        age: 25,
+    },
+    {
+        id: 2,
+        role: 'ADMIN',
+        name: 'Admin User',
+        username: 'admin_user',
+        email: 'admin_user@test.com',
+        avatar: '/assets/images/face-5.jpg',
         age: 25,
     },
 ]

@@ -35,7 +35,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const JwtLogin = () => {
     const [loading, setLoading] = useState(false)
     const [userInfo, setUserInfo] = useState({
-        email: 'jason@ui-lib.com',
+        email: 'staff_user@test.com',
         password: 'dummyPass',
     })
     const [message, setMessage] = useState('')
@@ -52,8 +52,8 @@ const JwtLogin = () => {
     const handleFormSubmit = async (event) => {
         setLoading(true)
         try {
-            await login(userInfo.email, userInfo.password)
-            history.push('/')
+            const user = await login(userInfo.email, userInfo.password)
+            history.push('/', { user });
         } catch (e) {
             console.log(e)
             setMessage(e.message)

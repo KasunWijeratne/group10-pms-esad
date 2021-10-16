@@ -8,20 +8,24 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { Autocomplete } from '@material-ui/lab'
 
 const FormFields = {
     name: 'name',
-    suppliers: 'suppliers',
+    address1: 'address1',
+    address2: 'address2',
+    city: 'city',
     date: 'date',
 }
 
 const validationSchema = yup.object({
     [FormFields.name]: yup.string().required('Name is required'),
+    [FormFields.address1]: yup.string().required('Address is required'),
+    [FormFields.address2]: yup.string(),
+    [FormFields.city]: yup.string().required('City is required'),
     [FormFields.date]: yup.date().required('Date is required'),
 })
 
-const CreateMaterial = ({
+const CreateSupplier = ({
     suppliers,
     cancel,
     defaultValues,
@@ -31,7 +35,9 @@ const CreateMaterial = ({
         defaultValues: useMemo(() => {
             return {
                 [FormFields.name]: defaultValues.name,
-                [FormFields.suppliers]: defaultValues.suppliers,
+                [FormFields.address1]: defaultValues.address1,
+                [FormFields.address2]: defaultValues.address2,
+                [FormFields.city]: defaultValues.city,
                 [FormFields.date]: defaultValues.date,
             }
         }, [defaultValues]),
@@ -70,31 +76,61 @@ const CreateMaterial = ({
                             )}
                         />
                     </Grid>
-                    <Grid item lg={8} sm={12} xs={12}>
+                    <Grid item lg={4} sm={12} xs={12}>
                         <Controller
+                            name={FormFields.address1}
+                            control={control}
                             render={({
-                                field: { onChange, ...props },
+                                field: { onChange, value = '' },
                                 fieldState: { error },
                             }) => (
-                                <Autocomplete
-                                    {...props}
-                                    multiple
-                                    options={suppliers}
-                                    getOptionLabel={(option) => option.name}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Suppliers"
-                                        />
-                                    )}
-                                    onChange={(e, data) => {
-                                        onChange(data)
-                                    }}
+                                <TextField
+                                    id={FormFields.address1}
+                                    label="Address line 1"
+                                    value={value}
+                                    onChange={onChange}
+                                    error={error}
+                                    fullWidth
                                 />
                             )}
-                            onChange={([, data]) => data}
-                            name={FormFields.suppliers}
+                        />
+                    </Grid>
+                    <Grid item lg={4} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.address2}
                             control={control}
+                            render={({
+                                field: { onChange, value = '' },
+                                fieldState: { error },
+                            }) => (
+                                <TextField
+                                    id={FormFields.address2}
+                                    label="Address line 2"
+                                    value={value}
+                                    onChange={onChange}
+                                    error={error}
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item lg={4} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.city}
+                            control={control}
+                            render={({
+                                field: { onChange, value = '' },
+                                fieldState: { error },
+                            }) => (
+                                <TextField
+                                    id={FormFields.city}
+                                    label="City"
+                                    value={value}
+                                    onChange={onChange}
+                                    error={error}
+                                    fullWidth
+                                />
+                            )}
                         />
                     </Grid>
                     <Grid item lg={4} sm={12} xs={12}>
@@ -148,4 +184,4 @@ const CreateMaterial = ({
     )
 }
 
-export default CreateMaterial
+export default CreateSupplier

@@ -14,5 +14,6 @@ import './db/ecommerce'
 import './db/requisitions'
 import './db/materials'
 import './db/suppliers'
+import './db/order'
 
 Mock.onAny().passThrough()

@@ -6,7 +6,7 @@ const useStyles = makeStyles(({ palette }) => ({
   root: {
     '& .Mui-selected': {
       color: palette.primary.main,
-      background: 'rgba(25, 118, 210, 0.08)'
+      background: 'rgba(var(--primary), 0.15)'
     },
   }
 }));

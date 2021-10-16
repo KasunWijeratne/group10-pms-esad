@@ -5,6 +5,8 @@ import {
     FormControlLabel,
     Grid,
     Button,
+    Typography,
+    Box,
 } from '@material-ui/core'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,6 +23,12 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         maxWidth: 800,
         borderRadius: 12,
         margin: '1rem',
+    },
+    title: {
+        color: '#FFAF38',
+    },
+    subTitle: {
+        color: '#fff',
     },
 }))
 
@@ -50,17 +58,22 @@ const JwtRegister = () => {
     return (
         <div
             className={clsx(
-                'flex justify-center items-center  min-h-full-screen',
+                'flex flex-column justify-center items-center  min-h-full-screen',
                 classes.cardHolder
             )}
         >
+            <Box mb={5} justifyContent="center">
+                <Typography variant="h3" className={classes.title}>
+                    Procurement Manager
+                </Typography>
+            </Box>
             <Card className={classes.card}>
                 <Grid container>
                     <Grid item lg={5} md={5} sm={5} xs={12}>
                         <div className="p-8 flex justify-center bg-light-gray items-center h-full">
                             <img
-                                className="w-full"
-                                src="/assets/images/illustrations/posting_photo.svg"
+                                className="w-100"
+                                src="/assets/images/sliit-logo-01.png"
                                 alt=""
                             />
                         </div>
@@ -147,6 +160,11 @@ const JwtRegister = () => {
                     </Grid>
                 </Grid>
             </Card>
+            <Box mt={5} justifyContent="center">
+                <Typography variant="h6" className={classes.subTitle}>
+                    ESAD - Group 11
+                </Typography>
+            </Box>
         </div>
     )
 }

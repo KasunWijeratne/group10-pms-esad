@@ -3,7 +3,7 @@ import Mock from '../mock'
 const ordersList = [
     {
         id: 'order1',
-        customer: 'Customer 1',
+        customer: 'Best Bank',
         order: [
             {
                 itemId: 'orderItem1',
@@ -23,7 +23,7 @@ const ordersList = [
     },
     {
         id: 'order2',
-        customer: 'Customer 2',
+        customer: 'Cool Costumes',
         order: [
             {
                 itemId: 'orderItem1',
@@ -38,7 +38,7 @@ const ordersList = [
     },
     {
         id: 'order3',
-        customer: 'Customer 3',
+        customer: 'Fast Food',
         order: [
             {
                 itemId: 'orderItem1',
@@ -50,6 +50,31 @@ const ordersList = [
         total: 294034,
         paymentType: 'Debit Card',
         status: 'canceled',
+    },
+    {
+        id: 'order4',
+        customer: 'Next Meal',
+        order: [
+            {
+                itemId: 'orderItem1',
+                itemName: 'Order Item 1',
+                price: 120,
+            },
+            {
+                itemId: 'orderItem2',
+                itemName: 'Order Item 2',
+                price: 120,
+            },
+            {
+                itemId: 'orderItem3',
+                itemName: 'Order Item 3',
+                price: 53,
+            },
+        ],
+        date: '30 february, 2019',
+        total: 294034,
+        paymentType: 'Debit Card',
+        status: 'completed',
     },
 ]
 

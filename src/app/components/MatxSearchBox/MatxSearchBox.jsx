@@ -30,6 +30,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const MatxSearchBox = ({
     isOpen = false,
     showClose = true,
+    onChange
 }) => {
     const [open, setOpen] = useState(isOpen)
 
@@ -63,6 +64,7 @@ const MatxSearchBox = ({
                         )}
                         type="text"
                         placeholder="Search here..."
+                        onChange={onChange}
                         autoFocus
                     />
                     {showClose && (

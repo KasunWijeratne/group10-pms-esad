@@ -6,6 +6,8 @@ import {
     Grid,
     Button,
     CircularProgress,
+    Typography,
+    Box,
 } from '@material-ui/core'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 
@@ -30,6 +32,12 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         marginTop: -12,
         marginLeft: -12,
     },
+    title: {
+        color: '#FFAF38',
+    },
+    subTitle: {
+        color: '#fff',
+    },
 }))
 
 const JwtLogin = () => {
@@ -53,7 +61,7 @@ const JwtLogin = () => {
         setLoading(true)
         try {
             const user = await login(userInfo.email, userInfo.password)
-            history.push('/', { user });
+            history.push('/', { user })
         } catch (e) {
             console.log(e)
             setMessage(e.message)
@@ -64,17 +72,22 @@ const JwtLogin = () => {
     return (
         <div
             className={clsx(
-                'flex justify-center items-center  min-h-full-screen',
+                'flex flex-column justify-center items-center  min-h-full-screen',
                 classes.cardHolder
             )}
         >
+            <Box mb={5} justifyContent="center">
+                <Typography variant="h3" className={classes.title}>
+                    Procurement Manager
+                </Typography>
+            </Box>
             <Card className={classes.card}>
                 <Grid container>
                     <Grid item lg={5} md={5} sm={5} xs={12}>
                         <div className="p-8 flex justify-center items-center h-full">
                             <img
-                                className="w-200"
-                                src="/assets/images/illustrations/dreamer.svg"
+                                className="w-100"
+                                src="/assets/images/sliit-logo-01.png"
                                 alt=""
                             />
                         </div>
@@ -178,6 +191,11 @@ const JwtLogin = () => {
                     </Grid>
                 </Grid>
             </Card>
+            <Box mt={5} justifyContent="center">
+                <Typography variant="h6" className={classes.subTitle}>
+                    ESAD - Group 11
+                </Typography>
+            </Box>
         </div>
     )
 }

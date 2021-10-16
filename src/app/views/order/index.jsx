@@ -1,5 +1,5 @@
 import { Card, Divider, Icon, makeStyles } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
@@ -37,6 +37,22 @@ const Order = () => {
     const topbarTheme = settings.themes[Layout1Settings.topbar.theme]
 
     const [openDelete, setOpenDelete] = useState(false)
+    const [activeFilter, setActiveFilter] = useState('all')
+    const [searchText, setSearchText] = useState('');
+
+    const filteredList = useMemo(() => {
+        if (activeFilter === 'all') {
+            return ordersList;
+        }
+        return ordersList.filter((order) => order.status === activeFilter)
+    }, [activeFilter, ordersList]);
+
+    const searchedList = useMemo(() => {
+        if (searchText === '') {
+            return filteredList
+        }
+        return filteredList.filter((item) => item.customer.toLowerCase().includes(searchText) || item.id.includes(searchText));
+    }, [filteredList, searchText])
 
     const fetchOrders = async () => {
         try {
@@ -58,8 +74,8 @@ const Order = () => {
         setOpenDelete(false)
     }
 
-    const activeFilter = (active) => {
-        //
+    const handleActiveFilter = (active) => {
+        setActiveFilter(active);
     }
 
     useEffect(() => {
@@ -78,18 +94,18 @@ const Order = () => {
                     <h2 className="card-title">Current Orders</h2>
                 </div>
                 <div className="p-6">
-                    <OrderFilters activeFilter={activeFilter} />
+                    <OrderFilters activeFilter={handleActiveFilter} />
                 </div>
                 <Divider />
                 <div className={clsx('mr-2 ml-10', styles['search-bar'])}>
                     <Icon className={styles.icon}>search</Icon>
                     <ThemeProvider theme={topbarTheme}>
-                        <MatxSearchBox isOpen showClose={false} />
+                        <MatxSearchBox isOpen showClose={false} onChange={(e) => { setSearchText(e.target.value) }} />
                     </ThemeProvider>
                 </div>
                 <Divider />
                 <OrderList
-                    ordersList={ordersList}
+                    ordersList={searchedList}
                     handleDialog={handleDialogOpen}
                 />
                 <DeleteOrder

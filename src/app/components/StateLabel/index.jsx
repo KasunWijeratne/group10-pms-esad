@@ -8,7 +8,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        maxWidth: 75,
+        maxWidth: 80,
         height: 20,
         textTransform: 'capitalize',
         borderRadius: 10,
@@ -19,7 +19,9 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
                 ? palette.error.main
                 : type === 'medium' || type === 'approved'
                 ? palette.success.main
-                : palette.primary.main,
+                : type === 'completed'
+                ? palette.text.disabled
+                : palette.info.main,
     }),
 }))
 

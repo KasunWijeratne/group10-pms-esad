@@ -7,6 +7,7 @@ import { getRequisitionsList } from '../../redux/actions/RequisitionActions'
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
+import ViewRequisition from './view-requisition'
 
 export const defaultState = {
     site: '',
@@ -58,12 +59,13 @@ const Requisition = () => {
             value: 'low',
         },
     ])
+    const [viewRequisition, setViewRequisition] = useState(false);
+    const [viewingReq, setViewingReq] = useState(null)
     const [isUpdate, setIsUpdate] = useState(false)
     const requisitionsList = useSelector((state) => state.requisition);
     const [reqItemDefaultValues, setReqItemDefaultValues] = useState(defaultState);
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-
    
     const fetchRequisitions = async () => {
         try {
@@ -83,6 +85,11 @@ const Requisition = () => {
         setIsUpdate(true)
         setReqItemDefaultValues(requisition)
         setCreateRequisition(true)
+    }
+
+    const handleRequistionView = (req) => {
+        setViewingReq(req);
+        setViewRequisition(true);
     }
 
     useEffect(() => {
@@ -124,6 +131,12 @@ const Requisition = () => {
                 <RequisitionList
                     requisitionsList={requisitionsList}
                     editRequisition={handleEditRequisition}
+                    viewRequisition={handleRequistionView}
+                />
+                <ViewRequisition
+                    open={viewRequisition}
+                    handleClose={setViewRequisition}
+                    data={viewingReq}
                 />
             </Card>
         </div>

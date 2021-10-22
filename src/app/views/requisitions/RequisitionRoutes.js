@@ -5,7 +5,7 @@ const requisitionRoutes = [
     {
         path: '/requisitions',
         component: React.lazy(() => import('./index')),
-        auth: authRoles.staff,
+        auth: authRoles.acc_staff,
     }
 ]
 

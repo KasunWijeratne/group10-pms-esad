@@ -8,10 +8,11 @@ import {
     IconButton,
     Icon,
     Chip,
+    Button,
 } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
 
-const RequisitionList = ({ requisitionsList = [], editRequisition }) => {
+const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisition }) => {
     const theme = useTheme();
     const getColor = (type) => {
         if (type === 'high') {
@@ -66,7 +67,10 @@ const RequisitionList = ({ requisitionsList = [], editRequisition }) => {
                         </TableCell>
                         <TableCell className="px-6">
                             <Chip
-                                style={{ background: getColor(requisition.priority), color: '#fff' }}
+                                style={{
+                                    background: getColor(requisition.priority),
+                                    color: '#fff',
+                                }}
                                 label={requisition.priority}
                             />
                         </TableCell>
@@ -75,13 +79,22 @@ const RequisitionList = ({ requisitionsList = [], editRequisition }) => {
                         </TableCell>
                         <TableCell className="px-6">
                             <div className="flex">
-                                <IconButton
+                                {/* <IconButton
                                     onClick={() => {
                                         editRequisition(requisition)
                                     }}
                                 >
                                     <Icon>edit</Icon>
-                                </IconButton>
+                                </IconButton> */}
+                                <Button
+                                    variant="text"
+                                    color="primary"
+                                    onClick={() => {
+                                        viewRequisition(requisition, true)
+                                    }}
+                                >
+                                    View
+                                </Button>
                                 <IconButton>
                                     <Icon>print</Icon>
                                 </IconButton>

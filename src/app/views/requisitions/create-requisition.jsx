@@ -23,23 +23,25 @@ const FormFields = {
     priority: 'priority',
     material: 'material',
     supplier: 'supplier',
+    quantity: 'supplier',
     date: 'date',
 }
 
 const validationSchema = yup.object({
+    [FormFields.priority]: yup.string().required('Priority is required'),
+    [FormFields.date]: yup.date().required('Date is required'),
+    [FormFields.site]: yup.string().required('Site is required'),
     items: yup.array().of(
         yup.object({
-            [FormFields.site]: yup.string().required('Site is required'),
-            [FormFields.priority]: yup
-                .string()
-                .required('Priority is required'),
             [FormFields.material]: yup
                 .string()
                 .required('Material is required'),
             [FormFields.supplier]: yup
                 .string()
                 .required('Supplier is required'),
-            [FormFields.date]: yup.date().required('Date is required'),
+            [FormFields.quantity]: yup
+                .number()
+                .required('Quantity is required'),
         })
     ),
 })
@@ -83,7 +85,7 @@ const CreateRequisition = ({
 
     const removeItem = (index) => {
         const items = [...reqList]
-        if (items.length < 1) {
+        if (items.length > 1) {
             items.splice(index, 1)
             setReqList(items)
         }
@@ -97,66 +99,96 @@ const CreateRequisition = ({
         <div>
             <Divider className="mb-4" />
             <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid container spacing={2}>
+                    <Grid item lg={3} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.site}
+                            control={control}
+                            render={({
+                                field: { onChange, value = '' },
+                                fieldState: { error },
+                            }) => (
+                                <TextField
+                                    name={FormFields.site}
+                                    select
+                                    label="Site"
+                                    value={value}
+                                    onChange={onChange}
+                                    error={error}
+                                    fullWidth
+                                >
+                                    {sites.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item lg={3} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.priority}
+                            control={control}
+                            render={({
+                                field: { onChange, value = '' },
+                                fieldState: { error },
+                            }) => (
+                                <TextField
+                                    id={FormFields.priority}
+                                    select
+                                    label="Priority"
+                                    value={value}
+                                    onChange={onChange}
+                                    fullWidth
+                                    error={error}
+                                >
+                                    {priority.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item lg={3} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.date}
+                            control={control}
+                            render={({
+                                field: { onChange, value },
+                                fieldState: { error },
+                            }) => (
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        className="mb-4 w-full"
+                                        margin="none"
+                                        name={FormFields.date}
+                                        label="Date"
+                                        inputVariant="standard"
+                                        type="text"
+                                        autoOk={true}
+                                        value={value}
+                                        onChange={onChange}
+                                        error={error}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            )}
+                        />
+                    </Grid>
+                </Grid>
                 {reqList.map((field, i) => (
                     <Grid container spacing={2} key={`item${i}`}>
-                        <Grid item lg={3} sm={12} xs={12}>
-                            <Controller
-                                name={`items[${i}].${FormFields.site}`}
-                                control={control}
-                                render={({
-                                    field: { onChange, value = '' },
-                                    fieldState: { error },
-                                }) => (
-                                    <TextField
-                                        name={`items[${i}].${FormFields.site}`}
-                                        select
-                                        label="Site"
-                                        value={value}
-                                        onChange={onChange}
-                                        error={error}
-                                        fullWidth
-                                    >
-                                        {sites.map((option) => (
-                                            <MenuItem
-                                                key={option.value}
-                                                value={option.value}
-                                            >
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                )}
-                            />
-                        </Grid>
-                        <Grid item lg={3} sm={12} xs={12}>
-                            <Controller
-                                name={`items[${i}].${FormFields.priority}`}
-                                control={control}
-                                render={({
-                                    field: { onChange, value = '' },
-                                    fieldState: { error },
-                                }) => (
-                                    <TextField
-                                        id={`items[${i}].${FormFields.priority}`}
-                                        select
-                                        label="Priority"
-                                        value={value}
-                                        onChange={onChange}
-                                        fullWidth
-                                        error={error}
-                                    >
-                                        {priority.map((option) => (
-                                            <MenuItem
-                                                key={option.value}
-                                                value={option.value}
-                                            >
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                )}
-                            />
-                        </Grid>
                         <Grid item lg={3} sm={12} xs={12}>
                             <Controller
                                 name={`items[${i}].${FormFields.material}`}
@@ -217,37 +249,26 @@ const CreateRequisition = ({
                         </Grid>
                         <Grid item lg={3} sm={12} xs={12}>
                             <Controller
-                                name={`items[${i}].${FormFields.date}`}
+                                name={`items[${i}].${FormFields.quantity}`}
                                 control={control}
                                 render={({
-                                    field: { onChange, value },
+                                    field: { onChange, value = 1 },
                                     fieldState: { error },
                                 }) => (
-                                    <MuiPickersUtilsProvider
-                                        utils={DateFnsUtils}
-                                    >
-                                        <KeyboardDatePicker
-                                            className="mb-4 w-full"
-                                            margin="none"
-                                            name={`items[${i}].${FormFields.date}`}
-                                            label="Date"
-                                            inputVariant="standard"
-                                            type="text"
-                                            autoOk={true}
-                                            value={value}
-                                            onChange={onChange}
-                                            error={error}
-                                            KeyboardButtonProps={{
-                                                'aria-label': 'change date',
-                                            }}
-                                        />
-                                    </MuiPickersUtilsProvider>
+                                    <TextField
+                                        name={`items[${i}].${FormFields.quantity}`}
+                                        label="Quantity"
+                                        value={value}
+                                        onChange={onChange}
+                                        error={error}
+                                        fullWidth
+                                    />
                                 )}
                             />
                         </Grid>
                         <Grid
                             item
-                            lg={9}
+                            lg={3}
                             sm={12}
                             xs={12}
                             className="flex justify-end"

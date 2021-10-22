@@ -5,7 +5,7 @@ export const navigations = [
         name: 'Requisition list',
         path: '/requisitions',
         icon: 'dashboard',
-        auth: authRoles.account_staff,
+        auth: authRoles.acc_staff,
     },
     {
         name: 'Materials',

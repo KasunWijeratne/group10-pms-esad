@@ -17,9 +17,9 @@ const userList = [
     {
         id: 2,
         role: 'ADMIN',
-        name: 'Admin User',
-        username: 'admin_user',
-        email: 'admin_user@test.com',
+        name: 'Manager User',
+        username: 'manager',
+        email: 'manager@test.com',
         avatar: '/assets/images/face-5.jpg',
         age: 25,
     },

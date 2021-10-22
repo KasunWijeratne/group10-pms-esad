@@ -1,14 +1,14 @@
 import { Card, Button } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import React, { useEffect, useState } from 'react'
-import CreateRequisition from './create-reaquisition'
+import CreateRequisition from './create-requisition'
 import RequisitionList from './requisition-list'
 import { getRequisitionsList } from '../../redux/actions/RequisitionActions'
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
 
-const defaultState = {
+export const defaultState = {
     site: '',
     priority: '',
     material: '',
@@ -62,7 +62,7 @@ const Requisition = () => {
     const requisitionsList = useSelector((state) => state.requisition);
     const [reqItemDefaultValues, setReqItemDefaultValues] = useState(defaultState);
     const dispatch = useDispatch();
-   const { enqueueSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
 
    
     const fetchRequisitions = async () => {
@@ -116,7 +116,7 @@ const Requisition = () => {
                             materials={materials}
                             priority={priority}
                             cancel={cancelCreate}
-                            defaultValues={reqItemDefaultValues}
+                            defaultValues={[reqItemDefaultValues]}
                             isUpdate={isUpdate}
                         />
                     </div>

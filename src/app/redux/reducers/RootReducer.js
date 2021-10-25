@@ -8,6 +8,7 @@ import GlobalReducer from './GlobalReducer'
 import MaterialReducer from './MaterialRecuder'
 import SupplierReducer from './SupplierReducer'
 import OrderReducer from './OrderReducer'
+import DeliveryReducer from './DeliveryReducer'
 
 const RootReducer = combineReducers({
     notifications: NotificationReducer,
@@ -18,6 +19,7 @@ const RootReducer = combineReducers({
     material: MaterialReducer,
     supplier: SupplierReducer,
     order: OrderReducer,
+    delivery: DeliveryReducer,
     global: GlobalReducer,
 })
 

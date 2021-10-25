@@ -5,6 +5,7 @@ import requisitionsRoutes from './views/requisitions/RequisitionRoutes';
 import materialRoutes from './views/materials/MaterialRoutes';
 import supplierRoutes from './views/suppliers/SuppliersRoutes';
 import orderRoutes from './views/order/OrderRoutes';
+import deliveryRoutes from './views/delivery/DeliveryRoutes'
 
 const redirectRoute = [
     {
@@ -12,7 +13,7 @@ const redirectRoute = [
         exact: true,
         component: ({ location }) => {
             const role = location?.state?.user?.role;
-            if (role === 'ADMIN') {
+            if (role === 'SITE_MANAGER') {
                 return <Redirect to="/orders" />
             } else {
                 return <Redirect to="/requisitions" />
@@ -32,6 +33,7 @@ const routes = [
     ...materialRoutes,
     ...supplierRoutes,
     ...orderRoutes,
+    ...deliveryRoutes,
     ...redirectRoute,
     ...errorRoute,
 ]

@@ -5,7 +5,7 @@ const orderRoutes = [
     {
         path: '/orders',
         component: React.lazy(() => import('./index')),
-        auth: authRoles.proc_staff,
+        auth: authRoles.site_manager,
     },
 ]
 

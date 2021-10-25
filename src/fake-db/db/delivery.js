@@ -1,11 +1,10 @@
 import Mock from '../mock'
 
-const requisitionsList = [
+const deliveriesList = [
     {
-        id: '123123',
-        site: 'col',
+        id: 1,
+        purchaseOrder: '123123',
         date: '18 january, 2019',
-        priority: 'low',
         items: [
             {
                 material: 'mat1',
@@ -14,13 +13,12 @@ const requisitionsList = [
                 unitPrice: 100,
             },
         ],
-        price: 2121,
+        quantity: 6,
     },
     {
-        id: '4322523',
-        site: 'kan',
+        id: 2,
+        purchaseOrder: '4322523',
         date: '18 january, 2019',
-        priority: 'high',
         items: [
             {
                 material: 'mat2',
@@ -29,10 +27,10 @@ const requisitionsList = [
                 unitPrice: 100,
             },
         ],
-        price: 2121,
+        quantity: 5,
     },
 ]
 
-Mock.onGet('/api/requisition/all').reply((config) => {
-    return [200, requisitionsList]
+Mock.onGet('/api/delivery/all').reply((config) => {
+    return [200, deliveriesList]
 })

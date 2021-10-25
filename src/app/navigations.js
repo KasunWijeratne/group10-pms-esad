@@ -25,4 +25,10 @@ export const navigations = [
         icon: 'dashboard',
         auth: authRoles.proc_staff,
     },
+    {
+        name: 'Delivery',
+        path: '/delivery',
+        icon: 'dashboard',
+        auth: authRoles.site_manager,
+    },
 ]

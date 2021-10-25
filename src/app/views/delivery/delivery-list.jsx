@@ -10,63 +10,41 @@ import {
     Chip,
     Button,
 } from '@material-ui/core'
-import { useTheme } from '@material-ui/styles'
 
-const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisition }) => {
-    const theme = useTheme();
-    const getColor = (type) => {
-        if (type === 'high') {
-            return theme.palette.error.main;
-        } else if (type === 'medium') {
-            return theme.palette.success.main;
-        } else {
-            return theme.palette.primary.main;
-        }
-    }
+const DeliveryList = ({ deliveriesList = [], viewDelivery }) => {
     return (
         <Table className="whitespace-pre" stickyHeader>
             <colgroup>
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
+                <col style={{ width: '30%' }} />
+                <col style={{ width: '30%' }} />
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '20%' }} />
             </colgroup>
             <TableHead>
                 <TableRow>
                     <TableCell className="px-6">Created Date</TableCell>
-                    <TableCell className="px-6">Site</TableCell>
-                    <TableCell className="px-6">Priority</TableCell>
-                    <TableCell className="px-6">Price</TableCell>
+                    <TableCell className="px-6">Order ID</TableCell>
+                    <TableCell className="px-6">Quantity</TableCell>
                     <TableCell className="px-6">Action</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
-                {requisitionsList.map((requisition, i) => (
+                {deliveriesList.map((delivery, i) => (
                     <TableRow key={i}>
                         <TableCell className="px-6">
-                            {requisition.date}
+                            {delivery.date}
                         </TableCell>
                         <TableCell className="px-6">
-                            {requisition.site}
+                            {delivery.purchaseOrder}
                         </TableCell>
                         <TableCell className="px-6">
-                            <Chip
-                                style={{
-                                    background: getColor(requisition.priority),
-                                    color: '#fff',
-                                }}
-                                label={requisition.priority}
-                            />
-                        </TableCell>
-                        <TableCell className="px-6">
-                            ${requisition.price}
+                            {delivery.quantity}
                         </TableCell>
                         <TableCell className="px-6">
                             <div className="flex">
                                 {/* <IconButton
                                     onClick={() => {
-                                        editRequisition(requisition)
+                                        editRequisition(delivery)
                                     }}
                                 >
                                     <Icon>edit</Icon>
@@ -75,7 +53,7 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
                                     variant="text"
                                     color="primary"
                                     onClick={() => {
-                                        viewRequisition(requisition, true)
+                                        viewDelivery(delivery, true)
                                     }}
                                 >
                                     View
@@ -95,4 +73,4 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
     )
 }
 
-export default RequisitionList
+export default DeliveryList

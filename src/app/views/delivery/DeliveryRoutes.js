@@ -1,12 +1,12 @@
 import React from 'react'
 import { authRoles } from '../../auth/authRoles'
 
-const materialRoutes = [
+const deliveryRoutes = [
     {
-        path: '/materials',
+        path: '/delivery',
         component: React.lazy(() => import('./index')),
-        auth: authRoles.acc_manager,
+        auth: authRoles.site_manager,
     }
 ]
 
-export default materialRoutes;
+export default deliveryRoutes;

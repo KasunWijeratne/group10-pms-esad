@@ -5,7 +5,7 @@ const suppliersRoutes = [
     {
         path: '/suppliers',
         component: React.lazy(() => import('./index')),
-        auth: authRoles.all,
+        auth: authRoles.acc_manager,
     },
 ]
 

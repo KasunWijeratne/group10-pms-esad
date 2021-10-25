@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Controller, useForm, useFieldArray } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
@@ -23,7 +23,7 @@ const FormFields = {
     priority: 'priority',
     material: 'material',
     supplier: 'supplier',
-    quantity: 'supplier',
+    quantity: 'quantity',
     date: 'date',
 }
 
@@ -58,22 +58,20 @@ const CreateRequisition = ({
     const [reqList, setReqList] = useState(defaultValues);
     const { control, handleSubmit, reset } = useForm({
         defaultValues: useMemo(
-            () =>
-                reqList.map((item) => ({
-                    [FormFields.site]: defaultValues.site,
-                    [FormFields.priority]: defaultValues.priority,
+            () => ({
+                [FormFields.site]: defaultValues.site,
+                [FormFields.date]: defaultValues.date,
+                [FormFields.priority]: defaultValues.priority,
+                items: reqList.map((item) => ({
                     [FormFields.material]: defaultValues.material,
                     [FormFields.supplier]: defaultValues.supplier,
-                    [FormFields.date]: defaultValues.date,
+                    [FormFields.quantity]: defaultValues.quantity,
                 })),
+            }),
             [defaultValues, reqList]
         ),
         resolver: yupResolver(validationSchema),
     })
-    // const { fields = [], append } = useFieldArray({
-    //     control,
-    //     name: 'items',
-    // })
 
     const onSubmit = (form) => {
         debugger
@@ -187,6 +185,7 @@ const CreateRequisition = ({
                         />
                     </Grid>
                 </Grid>
+                <Divider className="m-3" />
                 {reqList.map((field, i) => (
                     <Grid container spacing={2} key={`item${i}`}>
                         <Grid item lg={3} sm={12} xs={12}>
@@ -292,6 +291,7 @@ const CreateRequisition = ({
                         <Icon color="primary">add_circle_outline</Icon>
                     </IconButton>
                 </Grid>
+                <Divider className="m-3" />
                 <Grid container className="flex justify-end">
                     <Button type="submit" variant="outlined" color="primary">
                         {isUpdate ? 'Update' : 'Create'}

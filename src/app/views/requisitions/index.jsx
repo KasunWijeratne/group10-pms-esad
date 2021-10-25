@@ -13,6 +13,7 @@ export const defaultState = {
     site: '',
     priority: '',
     material: '',
+    supplier: '',
     quantity: 1,
     date: new Date(),
 }

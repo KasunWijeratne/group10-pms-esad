@@ -6,6 +6,7 @@ import MaterialReducer from './MaterialRecuder'
 import SupplierReducer from './SupplierReducer'
 import OrderReducer from './OrderReducer'
 import DeliveryReducer from './DeliveryReducer'
+import UserReducer from './UserReducer'
 
 const RootReducer = combineReducers({
     navigations: NavigationReducer,
@@ -15,6 +16,7 @@ const RootReducer = combineReducers({
     order: OrderReducer,
     delivery: DeliveryReducer,
     global: GlobalReducer,
+    users: UserReducer,
 })
 
 export default RootReducer

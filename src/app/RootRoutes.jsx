@@ -6,6 +6,7 @@ import materialRoutes from './views/materials/MaterialRoutes';
 import supplierRoutes from './views/suppliers/SuppliersRoutes';
 import orderRoutes from './views/order/OrderRoutes';
 import deliveryRoutes from './views/delivery/DeliveryRoutes'
+import usersRoutes from './views/users/UsersRoutes'
 
 const redirectRoute = [
     {
@@ -35,6 +36,7 @@ const routes = [
     ...orderRoutes,
     ...deliveryRoutes,
     ...redirectRoute,
+    ...usersRoutes,
     ...errorRoute,
 ]
 

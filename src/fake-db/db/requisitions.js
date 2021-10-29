@@ -6,6 +6,7 @@ const requisitionsList = [
         site: 'col',
         date: '18 january, 2019',
         priority: 'low',
+        status: 'pending',
         items: [
             {
                 material: 'mat1',
@@ -21,6 +22,7 @@ const requisitionsList = [
         site: 'kan',
         date: '18 january, 2019',
         priority: 'high',
+        status: 'approved',
         items: [
             {
                 material: 'mat2',

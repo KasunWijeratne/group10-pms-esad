@@ -1,13 +1,20 @@
-import { Card, Button } from '@material-ui/core'
+import { Card, Button, Divider, Icon } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import CreateRequisition from './create-requisition'
 import RequisitionList from './requisition-list'
 import { getRequisitionsList } from '../../redux/actions/RequisitionActions'
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
 import ViewRequisition from './view-requisition'
+import { MatxSearchBox } from 'app/components'
+import { ThemeProvider } from '@material-ui/core/styles'
+import clsx from 'clsx'
+import { makeStyles } from '@material-ui/styles'
+import RequisitionFilters from './requisitions-filters'
+import useSettings from 'app/hooks/useSettings'
+import Layout1Settings from 'app/components/MatxLayout/Layout1/Layout1Settings'
 
 export const defaultState = {
     site: '',
@@ -17,6 +24,21 @@ export const defaultState = {
     quantity: 1,
     date: new Date(),
 }
+
+const useStyles = makeStyles({
+    'search-bar': {
+        position: 'relative',
+        height: 65,
+    },
+    icon: {
+        position: 'absolute',
+        zIndex: 10,
+        top: 0,
+        bottom: 0,
+        left: -15,
+        margin: 'auto',
+    },
+})
 
 const Requisition = () => {
     const [showCreateRequisition, setCreateRequisition] = useState(false)
@@ -60,26 +82,50 @@ const Requisition = () => {
             value: 'low',
         },
     ])
-    const [viewRequisition, setViewRequisition] = useState(false);
+    const [viewRequisition, setViewRequisition] = useState(false)
     const [viewingReq, setViewingReq] = useState(null)
     const [isUpdate, setIsUpdate] = useState(false)
-    const requisitionsList = useSelector((state) => state.requisition);
-    const [reqItemDefaultValues, setReqItemDefaultValues] = useState(defaultState);
-    const dispatch = useDispatch();
-    const { enqueueSnackbar } = useSnackbar();
-   
+    const requisitionsList = useSelector((state) => state.requisition)
+    const [reqItemDefaultValues, setReqItemDefaultValues] =
+        useState(defaultState)
+    const dispatch = useDispatch()
+    const { enqueueSnackbar } = useSnackbar()
+    const [activeFilter, setActiveFilter] = useState('all')
+    const [searchText, setSearchText] = useState('')
+    const styles = useStyles()
+    const { settings } = useSettings()
+    const topbarTheme = settings.themes[Layout1Settings.topbar.theme]
+
+    const filteredList = useMemo(() => {
+        if (activeFilter === 'all') {
+            return requisitionsList
+        }
+        return requisitionsList.filter((order) => order.status === activeFilter)
+    }, [activeFilter, requisitionsList])
+
+    const searchedList = useMemo(() => {
+        if (searchText === '') {
+            return filteredList
+        }
+        return filteredList.filter(
+            (item) =>
+                item.site.toLowerCase().includes(searchText.toLowerCase()) ||
+                item.price.toString().toLowerCase().includes(searchText.toLowerCase())
+        )
+    }, [filteredList, searchText])
+
     const fetchRequisitions = async () => {
         try {
-            await dispatch(getRequisitionsList());
+            await dispatch(getRequisitionsList())
         } catch (e) {
             enqueueSnackbar('Failed to load requisitions', { variant: 'error' })
-        }   
+        }
     }
 
     const cancelCreate = () => {
-        setReqItemDefaultValues(defaultState);
-        setIsUpdate(false);
-        setCreateRequisition(false);
+        setReqItemDefaultValues(defaultState)
+        setIsUpdate(false)
+        setCreateRequisition(false)
     }
 
     const handleEditRequisition = (requisition) => {
@@ -89,23 +135,27 @@ const Requisition = () => {
     }
 
     const handleRequistionView = (req) => {
-        setViewingReq(req);
-        setViewRequisition(true);
+        setViewingReq(req)
+        setViewRequisition(true)
+    }
+
+    const handleActiveFilter = (active) => {
+        setActiveFilter(active)
     }
 
     useEffect(() => {
-        fetchRequisitions();
-    }, []);
+        fetchRequisitions()
+    }, [])
 
     return (
         <div className="requisitions m-sm-30 mt-6">
             <div className="flex justify-between items-center mb-6">
-                <h1>Requisitions</h1>
+                <h1>Orders</h1>
                 <h2 className="text-muted">Total: 20,000</h2>
             </div>
             <Card elevation={3} className="pt-5 mb-6">
                 <div className="flex justify-between items-center px-6 mb-3">
-                    <h2 className="card-title">Created requisitions</h2>
+                    <h2 className="card-title">Created orders</h2>
                     <Button
                         size="large"
                         variant="contained"
@@ -116,6 +166,23 @@ const Requisition = () => {
                         New
                     </Button>
                 </div>
+                <div className="p-6">
+                    <RequisitionFilters activeFilter={handleActiveFilter} />
+                </div>
+                <Divider />
+                <div className={clsx('mr-2 ml-10', styles['search-bar'])}>
+                    <Icon className={styles.icon}>search</Icon>
+                    <ThemeProvider theme={topbarTheme}>
+                        <MatxSearchBox
+                            isOpen
+                            showClose={false}
+                            onChange={(e) => {
+                                setSearchText(e.target.value)
+                            }}
+                        />
+                    </ThemeProvider>
+                </div>
+                <Divider />
                 {showCreateRequisition && (
                     <div className="p-6">
                         <CreateRequisition
@@ -130,7 +197,7 @@ const Requisition = () => {
                     </div>
                 )}
                 <RequisitionList
-                    requisitionsList={requisitionsList}
+                    requisitionsList={searchedList}
                     editRequisition={handleEditRequisition}
                     viewRequisition={handleRequistionView}
                 />

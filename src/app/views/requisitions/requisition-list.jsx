@@ -15,12 +15,14 @@ import { useTheme } from '@material-ui/styles'
 const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisition }) => {
     const theme = useTheme();
     const getColor = (type) => {
-        if (type === 'high') {
+        if (type === 'high' || type === 'declined') {
             return theme.palette.error.main;
-        } else if (type === 'medium') {
+        } else if (type === 'approved') {
             return theme.palette.success.main;
+        } else if (type === 'medium') {
+            return theme.palette.secondary.main
         } else {
-            return theme.palette.primary.main;
+            return theme.palette.primary.main
         }
     }
     return (
@@ -31,13 +33,15 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
             </colgroup>
             <TableHead>
                 <TableRow>
                     <TableCell className="px-6">Created Date</TableCell>
                     <TableCell className="px-6">Site</TableCell>
-                    <TableCell className="px-6">Priority</TableCell>
                     <TableCell className="px-6">Price</TableCell>
+                    <TableCell className="px-6">Priority</TableCell>
+                    <TableCell className="px-6">Status</TableCell>
                     <TableCell className="px-6">Action</TableCell>
                 </TableRow>
             </TableHead>
@@ -51,6 +55,9 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
                             {requisition.site}
                         </TableCell>
                         <TableCell className="px-6">
+                            ${requisition.price}
+                        </TableCell>
+                        <TableCell className="px-6">
                             <Chip
                                 style={{
                                     background: getColor(requisition.priority),
@@ -60,7 +67,13 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
                             />
                         </TableCell>
                         <TableCell className="px-6">
-                            ${requisition.price}
+                            <Chip
+                                style={{
+                                    background: getColor(requisition.status),
+                                    color: '#fff',
+                                }}
+                                label={requisition.status}
+                            />
                         </TableCell>
                         <TableCell className="px-6">
                             <div className="flex">

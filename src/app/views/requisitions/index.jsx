@@ -166,6 +166,19 @@ const Requisition = () => {
                         New
                     </Button>
                 </div>
+                {showCreateRequisition && (
+                    <div className="p-6">
+                        <CreateRequisition
+                            sites={sites}
+                            suppliers={suppliers}
+                            materials={materials}
+                            priority={priority}
+                            cancel={cancelCreate}
+                            defaultValues={[reqItemDefaultValues]}
+                            isUpdate={isUpdate}
+                        />
+                    </div>
+                )}
                 <div className="p-6">
                     <RequisitionFilters activeFilter={handleActiveFilter} />
                 </div>
@@ -183,19 +196,6 @@ const Requisition = () => {
                     </ThemeProvider>
                 </div>
                 <Divider />
-                {showCreateRequisition && (
-                    <div className="p-6">
-                        <CreateRequisition
-                            sites={sites}
-                            suppliers={suppliers}
-                            materials={materials}
-                            priority={priority}
-                            cancel={cancelCreate}
-                            defaultValues={[reqItemDefaultValues]}
-                            isUpdate={isUpdate}
-                        />
-                    </div>
-                )}
                 <RequisitionList
                     requisitionsList={searchedList}
                     editRequisition={handleEditRequisition}

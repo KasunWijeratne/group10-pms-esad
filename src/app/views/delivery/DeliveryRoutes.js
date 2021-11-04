@@ -5,7 +5,7 @@ const deliveryRoutes = [
     {
         path: '/delivery',
         component: React.lazy(() => import('./index')),
-        auth: authRoles.site_manager,
+        auth: authRoles.proc_staff,
     }
 ]
 

@@ -8,6 +8,7 @@ import { getMaterialList } from 'app/redux/actions/MaterialActions'
 import MaterialsList from './material-list'
 import CreateMaterial from './create-material'
 import { getSuppliersList } from 'app/redux/actions/SupplierActions'
+import Loading from '../../components/MatxLoading/MatxLoading'
 
 const defaultState = {
     name: '',
@@ -24,12 +25,16 @@ const Materials = () => {
         useState(defaultState)
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar()
+    const [loading, setLoading] = useState(false);
 
     const fetchMaterials = async () => {
         try {
+            setLoading(true);
             await dispatch(getMaterialList())
         } catch (e) {
             enqueueSnackbar('Failed to load materials', { variant: 'error' })
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -53,16 +58,11 @@ const Materials = () => {
         setCreateMaterial(true)
     }
 
-    useEffect(() => {
-        fetchMaterials()
-        fetchSuppliers()
-    }, [])
-
-    return (
-        <div className="requisitions m-sm-30 mt-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1>Materials</h1>
-            </div>
+    const render = () => {
+        if (loading) {
+            return <Loading />
+        }
+        return (
             <Card elevation={3} className="pt-5 mb-6">
                 <div className="flex justify-between items-center px-6 mb-3">
                     <h2 className="card-title">Added materials</h2>
@@ -92,6 +92,20 @@ const Materials = () => {
                     editMaterial={handleEditMaterial}
                 />
             </Card>
+        )
+    }
+
+    useEffect(() => {
+        fetchMaterials()
+        fetchSuppliers()
+    }, [])
+
+    return (
+        <div className="requisitions m-sm-30 mt-6">
+            <div className="flex justify-between items-center mb-6">
+                <h1>Materials</h1>
+            </div>
+            { render() }
         </div>
     )
 }

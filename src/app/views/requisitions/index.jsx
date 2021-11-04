@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/styles'
 import RequisitionFilters from './requisitions-filters'
 import useSettings from 'app/hooks/useSettings'
 import Layout1Settings from 'app/components/MatxLayout/Layout1/Layout1Settings'
+import Loading from 'app/components/MatxLoading/MatxLoading'
 
 export const defaultState = {
     site: '',
@@ -95,6 +96,7 @@ const Requisition = () => {
     const styles = useStyles()
     const { settings } = useSettings()
     const topbarTheme = settings.themes[Layout1Settings.topbar.theme]
+    const [loading, setLoading] = useState(false)
 
     const filteredList = useMemo(() => {
         if (activeFilter === 'all') {
@@ -116,9 +118,12 @@ const Requisition = () => {
 
     const fetchRequisitions = async () => {
         try {
+            setLoading(true);
             await dispatch(getRequisitionsList())
         } catch (e) {
             enqueueSnackbar('Failed to load requisitions', { variant: 'error' })
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -143,16 +148,11 @@ const Requisition = () => {
         setActiveFilter(active)
     }
 
-    useEffect(() => {
-        fetchRequisitions()
-    }, [])
-
-    return (
-        <div className="requisitions m-sm-30 mt-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1>Orders</h1>
-                <h2 className="text-muted">Total: 20,000</h2>
-            </div>
+    const render = () => {
+        if (loading) {
+            return <Loading />
+        }
+        return (
             <Card elevation={3} className="pt-5 mb-6">
                 <div className="flex justify-between items-center px-6 mb-3">
                     <h2 className="card-title">Created orders</h2>
@@ -207,6 +207,20 @@ const Requisition = () => {
                     data={viewingReq}
                 />
             </Card>
+        )
+    }
+
+    useEffect(() => {
+        fetchRequisitions()
+    }, [])
+
+    return (
+        <div className="requisitions m-sm-30 mt-6">
+            <div className="flex justify-between items-center mb-6">
+                <h1>Orders</h1>
+                <h2 className="text-muted">Total: 20,000</h2>
+            </div>
+            { render() }
         </div>
     )
 }

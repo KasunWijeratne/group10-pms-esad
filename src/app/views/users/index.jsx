@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 import CreateUser from './create-user'
 import { getUsersList } from 'app/redux/actions/UserActions'
 import UsersList from './users-list'
+import { render } from 'node-sass'
+import Loading from 'app/components/MatxLoading/MatxLoading'
 
 const defaultState = {
     fname: '',
@@ -25,12 +27,16 @@ const Users = () => {
         useState(defaultState)
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar();
+    const [loading, setLoading] = useState(false)
 
     const fetchUsers = async () => {
         try {
+            setLoading(true);
             await dispatch(getUsersList())
         } catch (e) {
             enqueueSnackbar('Failed to load users', { variant: 'error' })
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -46,17 +52,12 @@ const Users = () => {
         setCreateUser(true)
     }
 
-    useEffect(() => {
-        if (!usersList.length) {
-            fetchUsers()    
+    const render = () => {
+        if (loading) {
+            return <Loading />
         }
-    }, [])
 
-    return (
-        <div className="requisitions m-sm-30 mt-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1>Users</h1>
-            </div>
+        return (
             <Card elevation={3} className="pt-5 mb-6">
                 <div className="flex justify-between items-center px-6 mb-3">
                     <h2 className="card-title">Created users</h2>
@@ -80,11 +81,23 @@ const Users = () => {
                         />
                     </div>
                 )}
-                <UsersList
-                    usersList={usersList}
-                    editUser={handleEditUser}
-                />
+                <UsersList usersList={usersList} editUser={handleEditUser} />
             </Card>
+        )
+    }
+
+    useEffect(() => {
+        if (!usersList.length) {
+            fetchUsers()    
+        }
+    }, [])
+
+    return (
+        <div className="requisitions m-sm-30 mt-6">
+            <div className="flex justify-between items-center mb-6">
+                <h1>Users</h1>
+            </div>
+            { render() }
         </div>
     )
 }

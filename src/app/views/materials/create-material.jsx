@@ -2,13 +2,14 @@ import React, { useEffect, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { TextField, Grid, Button, Divider } from '@material-ui/core'
+import { TextField, Grid, Button, Divider, CircularProgress, Box } from '@material-ui/core'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { Autocomplete } from '@material-ui/lab'
+import Loading from 'app/components/MatxLoading/MatxLoading'
 
 const FormFields = {
     name: 'name',
@@ -26,6 +27,8 @@ const CreateMaterial = ({
     cancel,
     defaultValues,
     isUpdate,
+    handleCreate,
+    editLoading,
 }) => {
     const { control, handleSubmit, reset } = useForm({
         defaultValues: useMemo(() => {
@@ -39,16 +42,25 @@ const CreateMaterial = ({
     })
 
     const onSubmit = (form) => {
-        debugger
+        const { name, date, suppliers } = form;
+        const payload = {
+            name,
+            suppliers: suppliers.map((sup) => sup.id),
+        };
+        debugger;
+        handleCreate(payload)
     }
 
-    useEffect(() => {
-        reset(defaultValues)
-    }, [defaultValues, reset])
+    const render = () => {
+        if (editLoading) {
+            return (
+                <Box display="flex" justifyContent="center">
+                    <CircularProgress />
+                </Box>
+            )
+        }
 
-    return (
-        <div>
-            <Divider className="mb-4" />
+        return (
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2}>
                     <Grid item lg={4} sm={12} xs={12}>
@@ -143,6 +155,17 @@ const CreateMaterial = ({
                     </Grid>
                 </Grid>
             </form>
+        )
+    }
+
+    useEffect(() => {
+        reset(defaultValues)
+    }, [defaultValues, reset])
+
+    return (
+        <div>
+            <Divider className="mb-4" />
+            { render() }
             <Divider className="mt-6" />
         </div>
     )

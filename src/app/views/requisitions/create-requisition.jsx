@@ -55,6 +55,7 @@ const CreateRequisition = ({
     defaultValues,
     isUpdate,
 }) => {
+    debugger;
     const [reqList, setReqList] = useState(defaultValues);
     const { control, handleSubmit, reset } = useForm({
         defaultValues: useMemo(
@@ -207,10 +208,10 @@ const CreateRequisition = ({
                                     >
                                         {materials.map((option) => (
                                             <MenuItem
-                                                key={option.value}
-                                                value={option.value}
+                                                key={option.id}
+                                                value={option.id}
                                             >
-                                                {option.label}
+                                                {option.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
@@ -236,10 +237,10 @@ const CreateRequisition = ({
                                     >
                                         {suppliers.map((option) => (
                                             <MenuItem
-                                                key={option.value}
-                                                value={option.value}
+                                                key={option.id}
+                                                value={option.id}
                                             >
-                                                {option.label}
+                                                {option.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>

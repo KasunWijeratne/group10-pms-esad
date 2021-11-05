@@ -16,6 +16,8 @@ import RequisitionFilters from './requisitions-filters'
 import useSettings from 'app/hooks/useSettings'
 import Layout1Settings from 'app/components/MatxLayout/Layout1/Layout1Settings'
 import Loading from 'app/components/MatxLoading/MatxLoading'
+import { getMaterialList } from 'app/redux/actions/MaterialActions'
+import { getSuppliersList } from 'app/redux/actions/SupplierActions'
 
 export const defaultState = {
     site: '',
@@ -43,6 +45,8 @@ const useStyles = makeStyles({
 
 const Requisition = () => {
     const [showCreateRequisition, setCreateRequisition] = useState(false)
+    const materials = useSelector((state) => state.material)
+    const suppliers = useSelector((state) => state.supplier)
     const [sites, setSites] = useState([
         {
             label: 'Colombo',
@@ -53,30 +57,14 @@ const Requisition = () => {
             value: 'kan',
         },
     ])
-    const [materials, setMaterials] = useState([
-        {
-            label: 'Material1',
-            value: 'mat1',
-        },
-        {
-            label: 'Material2',
-            value: 'mat2',
-        },
-    ])
-    const [suppliers, setSuppliers] = useState([
-        {
-            label: 'Supplier1',
-            value: 'sup1',
-        },
-        {
-            label: 'Supplier2',
-            value: 'sup2',
-        },
-    ])
     const [priority, setPriority] = useState([
         {
             label: 'High',
             value: 'high',
+        },
+        {
+            label: 'Medium',
+            value: 'medium',
         },
         {
             label: 'Low',
@@ -127,10 +115,38 @@ const Requisition = () => {
         }
     }
 
+    const fetchMaterials = async () => {
+        try {
+            setLoading(true)
+            await dispatch(getMaterialList())
+        } catch (e) {
+            enqueueSnackbar('Failed to load materials', {
+                variant: 'error',
+            })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const fetchSuppliers = async () => {
+        try {
+            await dispatch(getSuppliersList())
+        } catch (e) {
+            enqueueSnackbar('Failed to load suppliers', {
+                variant: 'error',
+            })
+        }
+    }
+
     const cancelCreate = () => {
         setReqItemDefaultValues(defaultState)
         setIsUpdate(false)
         setCreateRequisition(false)
+    }
+
+    const handleAddClick = () => {
+        cancelCreate()
+        setCreateRequisition(true)
     }
 
     const handleEditRequisition = (requisition) => {
@@ -161,7 +177,7 @@ const Requisition = () => {
                         variant="contained"
                         color="primary"
                         startIcon={<Add />}
-                        onClick={setCreateRequisition}
+                        onClick={handleAddClick}
                     >
                         New
                     </Button>
@@ -212,6 +228,8 @@ const Requisition = () => {
 
     useEffect(() => {
         fetchRequisitions()
+        fetchMaterials()
+        fetchSuppliers()
     }, [])
 
     return (

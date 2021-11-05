@@ -16,15 +16,13 @@ const SuppliersList = ({ suppliersList = [], editSupplier }) => {
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '35%' }} />
                 <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
                 <col style={{ width: '15%' }} />
             </colgroup>
             <TableHead>
                 <TableRow>
                     <TableCell className="px-6">Name</TableCell>
-                    <TableCell className="px-6">Address</TableCell>
-                    <TableCell className="px-6">City</TableCell>
-                    <TableCell className="px-6">Date</TableCell>
+                    <TableCell className="px-6">Email</TableCell>
+                    <TableCell className="px-6">Phone</TableCell>
                     <TableCell className="px-6">Action</TableCell>
                 </TableRow>
             </TableHead>
@@ -32,14 +30,13 @@ const SuppliersList = ({ suppliersList = [], editSupplier }) => {
                 {suppliersList.map((supplier, i) => (
                     <TableRow key={i}>
                         <TableCell className="px-6">{supplier.name}</TableCell>
-                        <TableCell className="px-6">{`${supplier.address1} ${supplier.address2}`}</TableCell>
-                        <TableCell className="px-6">{supplier.city}</TableCell>
-                        <TableCell className="px-6">{supplier.date}</TableCell>
+                        <TableCell className="px-6">{supplier.email}</TableCell>
+                        <TableCell className="px-6">{supplier.phone}</TableCell>
                         <TableCell className="px-6">
                             <div className="flex">
                                 <IconButton
                                     onClick={() => {
-                                        editSupplier(supplier)
+                                        editSupplier(supplier.id)
                                     }}
                                 >
                                     <Icon>edit</Icon>

@@ -15,14 +15,18 @@ const FormFields = {
     address2: 'address2',
     city: 'city',
     date: 'date',
+    email: 'email',
+    phone: 'phone',
 }
 
 const validationSchema = yup.object({
     [FormFields.name]: yup.string().required('Name is required'),
+    [FormFields.email]: yup.string().email().required('Email is required'),
     [FormFields.address1]: yup.string().required('Address is required'),
     [FormFields.address2]: yup.string(),
     [FormFields.city]: yup.string().required('City is required'),
     [FormFields.date]: yup.date().required('Date is required'),
+    [FormFields.phone]: yup.string().required('Phone is required'),
 })
 
 const CreateSupplier = ({
@@ -30,6 +34,7 @@ const CreateSupplier = ({
     cancel,
     defaultValues,
     isUpdate,
+    handleCreate,
 }) => {
     const { control, handleSubmit, reset } = useForm({
         defaultValues: useMemo(() => {
@@ -39,13 +44,22 @@ const CreateSupplier = ({
                 [FormFields.address2]: defaultValues.address2,
                 [FormFields.city]: defaultValues.city,
                 [FormFields.date]: defaultValues.date,
+                [FormFields.email]: defaultValues.email,
+                [FormFields.phone]: defaultValues.phone,
             }
         }, [defaultValues]),
         resolver: yupResolver(validationSchema),
     })
 
     const onSubmit = (form) => {
-        debugger
+         const { name, email, address1, address2, city, phone } = form
+         const payload = {
+             name,
+             email,
+             phone,
+             address: `${address1} ${address2} ${city}`,
+         }
+         handleCreate(payload)
     }
 
     useEffect(() => {
@@ -125,6 +139,44 @@ const CreateSupplier = ({
                                 <TextField
                                     id={FormFields.city}
                                     label="City"
+                                    value={value}
+                                    onChange={onChange}
+                                    error={error}
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item lg={4} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.email}
+                            control={control}
+                            render={({
+                                field: { onChange, value = '' },
+                                fieldState: { error },
+                            }) => (
+                                <TextField
+                                    id={FormFields.email}
+                                    label="Email"
+                                    value={value}
+                                    onChange={onChange}
+                                    error={error}
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item lg={4} sm={12} xs={12}>
+                        <Controller
+                            name={FormFields.phone}
+                            control={control}
+                            render={({
+                                field: { onChange, value = '' },
+                                fieldState: { error },
+                            }) => (
+                                <TextField
+                                    id={FormFields.phone}
+                                    label="Phone"
                                     value={value}
                                     onChange={onChange}
                                     error={error}

@@ -85,10 +85,15 @@ export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const login = async (email, password) => {
-        const response = await axios.post('/api/auth/login', {
-            email,
-            password,
-        })
+        const response = await axios.post(
+            'https://secret-garden-02617.herokuapp.com/api/login',
+            {
+                email,
+                password,
+                device_name: 'iphone11',
+            }
+        )
+        debugger;
         const { accessToken, user } = response.data
 
         setSession(accessToken);

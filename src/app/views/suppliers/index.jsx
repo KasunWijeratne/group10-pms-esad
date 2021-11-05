@@ -4,48 +4,96 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
-import CreateMaterial from './create-supplier'
-import { getSuppliersList } from 'app/redux/actions/SupplierActions'
+import CreateSupplier from './create-supplier'
+import { addSupplier, deleteSupplier, getSupplierData, getSuppliersList, GET_SUPPLIER_DATA } from 'app/redux/actions/SupplierActions'
+import Loading from '../../components/MatxLoading/MatxLoading'
+import ViewMaterial from './view-supplier'
 import SuppliersList from './suppliers-list'
-import Loading from 'app/components/MatxLoading/MatxLoading'
+import DeleteItem from 'app/components/DeleteItem'
 
 const defaultState = {
     name: '',
-    suppliers: [],
+    address1: '',
+    address2: '',
+    city: '',
     date: new Date(),
+    email: '',
+    phone: '',
 }
 
 const Suppliers = () => {
     const [showCreateSupplier, setCreateSupplier] = useState(false)
     const [isUpdate, setIsUpdate] = useState(false)
     const suppliersList = useSelector((state) => state.supplier)
-    const [supplierDefaultValues, setSupplierDefaultValues] =
-        useState(defaultState)
     const dispatch = useDispatch()
-    const { enqueueSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
+    const [editLoading, setEditLoading] = useState(false)
+    const [viewSupplier, setViewSupplier] = useState(false)
+    const [confirmDel, setConfirmDel] = useState(false)
+
+    const fetchSupplierData = async (id) => {
+        try {
+            setEditLoading(true)
+            await dispatch(getSupplierData(id))
+            setEditLoading(false)
+        } catch (e) {
+            enqueueSnackbar('Failed to load supplier details', {
+                variant: 'error',
+            })
+            setEditLoading(false)
+        }
+    }
 
     const fetchSuppliers = async () => {
         try {
-            setLoading(true);
             await dispatch(getSuppliersList())
         } catch (e) {
             enqueueSnackbar('Failed to load suppliers', { variant: 'error' })
-        } finally {
-            setLoading(false);
         }
     }
 
     const cancelCreate = () => {
-        setSupplierDefaultValues(defaultState)
+        dispatch({
+            type: GET_SUPPLIER_DATA,
+            payload: defaultState,
+        })
         setIsUpdate(false)
         setCreateSupplier(false)
     }
 
-    const handleEditSupplier = (requisition) => {
+    const handleEditSupplier = (id) => {
         setIsUpdate(true)
-        setSupplierDefaultValues(requisition)
         setCreateSupplier(true)
+        fetchSupplierData(id)
+    }
+    const handleViewSupplier = (id) => {
+        setViewSupplier(true)
+        fetchSupplierData(id)
+    }
+    const handleNewSupplier = async (payload) => {
+        try {
+            setLoading(true)
+            await dispatch(addSupplier(payload))
+            cancelCreate()
+            fetchSuppliers()
+        } catch (e) {
+            enqueueSnackbar('Failed to load suppliers', { variant: 'error' })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            setLoading(true)
+            await deleteSupplier(id)
+            fetchSuppliers()
+        } catch (e) {
+            enqueueSnackbar('Failed to delete Supplier', { variant: 'error' })
+        } finally {
+            setLoading(false)
+        }
     }
 
     const render = () => {
@@ -55,7 +103,7 @@ const Suppliers = () => {
         return (
             <Card elevation={3} className="pt-5 mb-6">
                 <div className="flex justify-between items-center px-6 mb-3">
-                    <h2 className="card-title">Added materials</h2>
+                    <h2 className="card-title">Added Suppliers</h2>
                     <Button
                         size="large"
                         variant="contained"
@@ -69,26 +117,34 @@ const Suppliers = () => {
                 </div>
                 {showCreateSupplier && (
                     <div className="p-6">
-                        <CreateMaterial
+                        <CreateSupplier
                             suppliers={suppliersList}
                             cancel={cancelCreate}
-                            defaultValues={supplierDefaultValues}
+                            defaultValues={suppliersList.active}
+                            handleCreate={handleNewSupplier}
                             isUpdate={isUpdate}
                         />
                     </div>
                 )}
                 <SuppliersList
-                    suppliersList={suppliersList}
+                    suppliersList={suppliersList.list}
                     editSupplier={handleEditSupplier}
+                    viewSupplier={handleViewSupplier}
+                    handleDelete={handleDelete}
                 />
+                <ViewMaterial
+                    open={viewSupplier}
+                    handleClose={setViewSupplier}
+                    data={suppliersList.active}
+                    loading={editLoading}
+                />
+                <DeleteItem open={confirmDel} handleClose={setConfirmDel} />
             </Card>
         )
     }
 
     useEffect(() => {
-        if (!suppliersList.length) {
-            fetchSuppliers()    
-        }
+        fetchSuppliers()
     }, [])
 
     return (
@@ -96,7 +152,7 @@ const Suppliers = () => {
             <div className="flex justify-between items-center mb-6">
                 <h1>Suppliers</h1>
             </div>
-            { render() }
+            {render()}
         </div>
     )
 }

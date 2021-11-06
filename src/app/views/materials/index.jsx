@@ -22,8 +22,6 @@ const Materials = () => {
     const [isUpdate, setIsUpdate] = useState(false)
     const materialsList = useSelector((state) => state.material)
     const suppliersList = useSelector((state) => state.supplier)
-    const [materialDefaultValues, setMaterialDefaultValues] =
-        useState(defaultState)
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false);

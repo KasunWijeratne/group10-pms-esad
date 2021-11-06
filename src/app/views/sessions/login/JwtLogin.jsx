@@ -168,7 +168,7 @@ const JwtLogin = () => {
                                             />
                                         )}
                                     </div>
-                                    <span className="mr-2 ml-5">or</span>
+                                    {/* <span className="mr-2 ml-5">or</span>
                                     <Button
                                         className="capitalize"
                                         onClick={() =>
@@ -176,7 +176,7 @@ const JwtLogin = () => {
                                         }
                                     >
                                         Sign up
-                                    </Button>
+                                    </Button> */}
                                 </div>
                                 <Button
                                     className="text-primary"

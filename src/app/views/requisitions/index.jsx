@@ -179,9 +179,9 @@ const Requisition = () => {
             await dispatch(addRequisition(payload))
             cancelCreate()
             // fetchMaterials()
-            enqueueSnackbar('Material added', { variant: 'success' })
+            enqueueSnackbar('Order added', { variant: 'success' })
         } catch (e) {
-            enqueueSnackbar('Material added', { variant: 'success' })
+            enqueueSnackbar('Order added', { variant: 'success' })
         } finally {
             setLoading(false)
         }

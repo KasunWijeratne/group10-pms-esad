@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import CreateUser from './create-user'
 import { getUsersList } from 'app/redux/actions/UserActions'
 import UsersList from './users-list'
-import { render } from 'node-sass'
 import Loading from 'app/components/MatxLoading/MatxLoading'
 
 const defaultState = {

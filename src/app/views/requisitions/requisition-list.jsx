@@ -29,15 +29,17 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
     return (
         <Table className="whitespace-pre" stickyHeader>
             <colgroup>
+                <col style={{ width: '10%' }} />
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '20%' }} />
-                <col style={{ width: '20%' }} />
+                <col style={{ width: '10%' }} />
                 <col style={{ width: '20%' }} />
                 <col style={{ width: '20%' }} />
             </colgroup>
             <TableHead>
                 <TableRow>
+                    <TableCell className="px-6">ID</TableCell>
                     <TableCell className="px-6">Created Date</TableCell>
                     <TableCell className="px-6">Site</TableCell>
                     <TableCell className="px-6">Price</TableCell>
@@ -49,6 +51,9 @@ const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisiti
             <TableBody>
                 {requisitionsList.map((requisition, i) => (
                     <TableRow key={i}>
+                        <TableCell className="px-6">
+                            {requisition.id}
+                        </TableCell>
                         <TableCell className="px-6">
                             {requisition.date}
                         </TableCell>

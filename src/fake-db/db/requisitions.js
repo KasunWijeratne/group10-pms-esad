@@ -15,7 +15,7 @@ const requisitionsList = [
                 unitPrice: 100,
             },
         ],
-        price: 2121,
+        price: 1765,
     },
     {
         id: 2,

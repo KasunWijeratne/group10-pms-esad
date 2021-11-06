@@ -51,7 +51,7 @@ const Order = () => {
         if (searchText === '') {
             return filteredList
         }
-        return filteredList.filter((item) => item.customer.toLowerCase().includes(searchText) || item.id.includes(searchText));
+        return filteredList.filter((item) => item.site.toLowerCase().includes(searchText) || item.id.includes(searchText));
     }, [filteredList, searchText])
 
     const fetchOrders = async () => {

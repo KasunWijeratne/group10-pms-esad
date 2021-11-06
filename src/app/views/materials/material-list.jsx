@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 
 const MaterialsList = ({ materialsList = [], editMaterial, viewMaterial }) => {
+    debugger;
     return (
         <Table className="whitespace-pre" stickyHeader>
             <colgroup>
@@ -70,4 +71,4 @@ const MaterialsList = ({ materialsList = [], editMaterial, viewMaterial }) => {
     )
 }
 
-export default MaterialsList
+export default React.memo(MaterialsList)

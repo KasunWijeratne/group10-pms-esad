@@ -47,7 +47,6 @@ const CreateMaterial = ({
             name,
             suppliers: suppliers.map((sup) => sup.id),
         };
-        debugger;
         handleCreate(payload)
     }
 

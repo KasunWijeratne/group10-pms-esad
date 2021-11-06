@@ -2,7 +2,7 @@ import Mock from '../mock'
 
 const requisitionsList = [
     {
-        id: '123123',
+        id: 1,
         site: 'col',
         date: '18 january, 2019',
         priority: 'low',
@@ -18,7 +18,7 @@ const requisitionsList = [
         price: 2121,
     },
     {
-        id: '4322523',
+        id: 2,
         site: 'kan',
         date: '18 january, 2019',
         priority: 'high',

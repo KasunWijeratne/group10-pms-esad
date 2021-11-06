@@ -3,7 +3,7 @@ import Add from '@material-ui/icons/Add'
 import React, { useEffect, useMemo, useState } from 'react'
 import CreateRequisition from './create-requisition'
 import RequisitionList from './requisition-list'
-import { getRequisitionsList } from '../../redux/actions/RequisitionActions'
+import { addRequisition, APPROVE_ORDER, getRequisitionsList } from '../../redux/actions/RequisitionActions'
 import { useDispatch } from 'react-redux'
 import { useSnackbar } from 'notistack'
 import { useSelector } from 'react-redux'
@@ -75,6 +75,7 @@ const Requisition = () => {
     const [viewingReq, setViewingReq] = useState(null)
     const [isUpdate, setIsUpdate] = useState(false)
     const requisitionsList = useSelector((state) => state.requisition)
+    debugger;
     const [reqItemDefaultValues, setReqItemDefaultValues] =
         useState(defaultState)
     const dispatch = useDispatch()
@@ -138,6 +139,14 @@ const Requisition = () => {
         }
     }
 
+    const getTotal = useMemo(() => {
+        let tot = 0;
+        requisitionsList.forEach((req) => {
+            tot += req.price
+        })
+        return tot;
+    }, [requisitionsList])
+
     const cancelCreate = () => {
         setReqItemDefaultValues(defaultState)
         setIsUpdate(false)
@@ -164,6 +173,53 @@ const Requisition = () => {
         setActiveFilter(active)
     }
 
+    const handleNewOrder = async (payload) => {
+        try {
+            setLoading(true)
+            await dispatch(addRequisition(payload))
+            cancelCreate()
+            // fetchMaterials()
+            enqueueSnackbar('Material added', { variant: 'success' })
+        } catch (e) {
+            enqueueSnackbar('Material added', { variant: 'success' })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleApprove = async (id) => {
+        const items = [...requisitionsList]
+        const newOrders = items.map((req) => {
+            if(req.id === id) {
+                req.status = 'approved'
+            }
+            return req;
+        })
+        await dispatch({
+            type: APPROVE_ORDER,
+            payload: newOrders,
+        })
+        setViewingReq(null)
+        setViewRequisition(false)
+    }
+
+    const handleReject = async (id, reason) => {
+        const items = [...requisitionsList]
+        const newOrders = items.map((req) => {
+            if (req.id === id) {
+                req.status = 'declined'
+                req['reason'] = reason
+            }
+            return req
+        })
+        await dispatch({
+            type: APPROVE_ORDER,
+            payload: newOrders,
+        })
+        setViewingReq(null)
+        setViewRequisition(false)
+    }
+
     const render = () => {
         if (loading) {
             return <Loading />
@@ -186,12 +242,14 @@ const Requisition = () => {
                     <div className="p-6">
                         <CreateRequisition
                             sites={sites}
-                            suppliers={suppliers}
-                            materials={materials}
+                            suppliers={suppliers.list}
+                            materials={materials.list}
                             priority={priority}
                             cancel={cancelCreate}
                             defaultValues={[reqItemDefaultValues]}
                             isUpdate={isUpdate}
+                            handleCreate={handleNewOrder}
+                            listLength={requisitionsList.length + 1}
                         />
                     </div>
                 )}
@@ -221,22 +279,31 @@ const Requisition = () => {
                     open={viewRequisition}
                     handleClose={setViewRequisition}
                     data={viewingReq}
+                    handleApprove={handleApprove}
+                    handleReject={handleReject}
                 />
             </Card>
         )
     }
 
     useEffect(() => {
-        fetchRequisitions()
-        fetchMaterials()
+        if (!requisitionsList.length) {
+            fetchRequisitions()
+        }
+        if (!materials.list.length) {
+fetchMaterials()
+        }
+        if (!suppliers.list.length) {
         fetchSuppliers()
+        }
+        
     }, [])
 
     return (
         <div className="requisitions m-sm-30 mt-6">
             <div className="flex justify-between items-center mb-6">
                 <h1>Orders</h1>
-                <h2 className="text-muted">Total: 20,000</h2>
+                <h2 className="text-muted">Total: {getTotal}</h2>
             </div>
             { render() }
         </div>

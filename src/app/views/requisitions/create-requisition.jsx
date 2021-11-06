@@ -17,6 +17,7 @@ import {
 } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { defaultState } from '.'
+import { format, compareAsc } from 'date-fns'
 
 const FormFields = {
     site: 'site',
@@ -29,7 +30,7 @@ const FormFields = {
 
 const validationSchema = yup.object({
     [FormFields.priority]: yup.string().required('Priority is required'),
-    [FormFields.date]: yup.date().required('Date is required'),
+    [FormFields.date]: yup.date(),
     [FormFields.site]: yup.string().required('Site is required'),
     items: yup.array().of(
         yup.object({
@@ -40,8 +41,7 @@ const validationSchema = yup.object({
                 .string()
                 .required('Supplier is required'),
             [FormFields.quantity]: yup
-                .number()
-                .required('Quantity is required'),
+                .number(),
         })
     ),
 })
@@ -54,9 +54,10 @@ const CreateRequisition = ({
     cancel,
     defaultValues,
     isUpdate,
+    handleCreate,
+    listLength,
 }) => {
-    debugger;
-    const [reqList, setReqList] = useState(defaultValues);
+    const [reqList, setReqList] = useState(defaultValues)
     const { control, handleSubmit, reset } = useForm({
         defaultValues: useMemo(
             () => ({
@@ -75,11 +76,32 @@ const CreateRequisition = ({
     })
 
     const onSubmit = (form) => {
-        debugger
+        const { items, priority, site } = form
+        let price = 0;
+        items.forEach((ite) => {
+            const qty = ite.quantity ? ite.quantity : 1;
+            price += 100 * qty
+        })
+        debugger;
+        const payload = {
+            id: listLength,
+            site,
+            date: format(new Date(2014, 1, 11), 'dd MM, yyyy'),
+            priority,
+            status: 'pending',
+            items: items.map((ite) => ({
+                material: ite.material,
+                quantity: ite.quantity ? ite.quantity : 1,
+                supplier: ite.supplier,
+                unitPrice: 100,
+            })),
+            price,
+        }
+        handleCreate(payload)
     }
 
     const addItems = () => {
-        setReqList([...reqList, defaultState]);
+        setReqList([...reqList, defaultState])
     }
 
     const removeItem = (index) => {

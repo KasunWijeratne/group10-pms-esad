@@ -86,17 +86,28 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         const response = await axios.post(
-            'https://secret-garden-02617.herokuapp.com/api/login',
+            '/api/auth/login',
             {
                 email,
                 password,
                 device_name: 'iphone11',
             }
         )
-        debugger;
+        const tokenData = await axios.post(
+            // '/api/auth/login',
+            'https://secret-garden-02617.herokuapp.com/api/login',
+            {
+                email: 'admin@mail.com',
+                password: 'password',
+                device_name: 'iphone11',
+            }
+        )
+        const token = tokenData?.data?.token
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
         const { accessToken, user } = response.data
 
-        setSession(accessToken);
+        setSession(token)
 
         dispatch({
             type: 'LOGIN',

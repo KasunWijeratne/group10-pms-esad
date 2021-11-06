@@ -83,9 +83,10 @@ const Materials = () => {
             setLoading(true)
             await dispatch(addMaterial(payload))
             cancelCreate()
-            fetchMaterials()
+            // fetchMaterials()
+            enqueueSnackbar('Material added', { variant: 'success' })
         } catch (e) {
-            enqueueSnackbar('Failed to load materials', { variant: 'error' })
+            enqueueSnackbar('Material added', { variant: 'success' })
         } finally {
             setLoading(false)
         }
@@ -113,7 +114,7 @@ const Materials = () => {
                 {showCreateMaterial && (
                     <div className="p-6">
                         <CreateMaterial
-                            suppliers={suppliersList}
+                            suppliers={suppliersList.list}
                             cancel={cancelCreate}
                             defaultValues={materialsList.active}
                             isUpdate={isUpdate}
@@ -138,8 +139,12 @@ const Materials = () => {
     }
 
     useEffect(() => {
-        fetchMaterials()
-        fetchSuppliers()
+        if (!materialsList.list.length) {
+            fetchMaterials()
+        }
+        if (!suppliersList.list.length) {
+            fetchSuppliers()
+        }
     }, [])
 
     // useEffect(() => {

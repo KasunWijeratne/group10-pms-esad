@@ -13,9 +13,10 @@ import {
 import { useTheme } from '@material-ui/styles'
 
 const RequisitionList = ({ requisitionsList = [], editRequisition, viewRequisition }) => {
+    debugger;
     const theme = useTheme();
     const getColor = (type) => {
-        if (type === 'high' || type === 'declined') {
+        if (type === 'high' || type === 'declined' || type === 'rejected') {
             return theme.palette.error.main;
         } else if (type === 'approved') {
             return theme.palette.success.main;

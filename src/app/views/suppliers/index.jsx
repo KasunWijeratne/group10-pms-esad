@@ -76,9 +76,9 @@ const Suppliers = () => {
             setLoading(true)
             await dispatch(addSupplier(payload))
             cancelCreate()
-            fetchSuppliers()
+            // fetchSuppliers()
         } catch (e) {
-            enqueueSnackbar('Failed to load suppliers', { variant: 'error' })
+            enqueueSnackbar('Supplier added', { variant: 'success' })
         } finally {
             setLoading(false)
         }

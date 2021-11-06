@@ -43,7 +43,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const JwtLogin = () => {
     const [loading, setLoading] = useState(false)
     const [userInfo, setUserInfo] = useState({
-        email: 'staff_user@test.com',
+        email: 'acc_manager@test.com',
         password: 'dummyPass',
     })
     const [message, setMessage] = useState('')

@@ -1,4 +1,4 @@
-import { GET_MATERIALS_DATA, GET_MATERIALS_LIST } from '../actions/MaterialActions'
+import { ADD_MATERIAL, GET_MATERIALS_DATA, GET_MATERIALS_LIST } from '../actions/MaterialActions'
 
 export const initialState = {
     list: [],
@@ -21,6 +21,20 @@ const MaterialReducer = function (state = initialState, action) {
             return {
                 ...state,
                 active: {...action.payload},
+            }
+        }       
+        case ADD_MATERIAL: {
+            return {
+                ...state,
+                list: [
+                    ...state.list,
+                    {
+                        id: state.list.length + 1,
+                        name: action.payload.name,
+                        unit: '1kg',
+                        unit_price: '2472.81',
+                    },
+                ],
             }
         }
         default: {

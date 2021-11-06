@@ -1,4 +1,4 @@
-import { GET_SUPPLIERS_LIST, GET_SUPPLIER_DATA } from '../actions/SupplierActions'
+import { ADD_SUPPLIER, GET_SUPPLIERS_LIST, GET_SUPPLIER_DATA } from '../actions/SupplierActions'
 
 const initialState = {
     list: [],
@@ -24,6 +24,18 @@ const SupplierReducer = function (state = initialState, action) {
             return {
                 ...state,
                 active: { ...action.payload },
+            }
+        }
+        case ADD_SUPPLIER: {
+            return {
+                ...state,
+                list: [
+                    ...state.list,
+                    {
+                        id: state.list.length + 1,
+                        ...action.payload,
+                    },
+                ],
             }
         }
         default: {
